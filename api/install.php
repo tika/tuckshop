@@ -71,5 +71,8 @@ $stmt->execute();
 
 echo "Created table baskets<br>";
 
+// "Log out"
+$_SESSION = null;
+
 $conn=null;
 ?>

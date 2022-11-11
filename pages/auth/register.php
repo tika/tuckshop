@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+// ensure user is not logged in
+if ($_SESSION["StudentID"] != null) {
+    header("Location: ../app/home.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,7 +16,7 @@
 <body>
     <h1>REGISTER STUDENT</h1>
     <h2>If you aren't a new student,
-        <a href="auth/login.php">click here</a>
+        <a href="./login.php">click here</a>
         to navigate to the login page
     </h2>
 
