@@ -2,7 +2,7 @@
 session_start();
 
 // ensure user is not logged in
-if ($_SESSION["StudentID"] != null) {
+if (isset($_SESSION['StudentID'])) {
     header("Location: ../app/home.php");
 }
 ?>
@@ -20,7 +20,7 @@ if ($_SESSION["StudentID"] != null) {
         to navigate to the register page
     </h2>
     <form method="POST" action="../../api/auth/login.api.php">
-        <select>
+        <select name="ID">
             <?php
         include_once('../../api/lib/connection.php');
 

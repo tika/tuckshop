@@ -1,5 +1,4 @@
 <?php
-header('Location: ../../pages/auth/login.php');
 session_start();
 try {
 	include_once('../lib/connection.php');
@@ -19,16 +18,23 @@ try {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $password = $row["Password"];
-    $provided_password = $_POST["password"];
+    $provided_password = $_POST["Password"];
+
+    echo $password . " " . $provided_password;
 
     // Compare passwords
-    if (!password_verify($provided_password, $password)) {
+    // if (!password_verify($provided_password, $password)) {
+    if (password_verify($provided_password, $password)) {
         echo "Incorrect password!";
         return;
     }
 
+    print_r($_POST);
+
     // Set session
     $_SESSION["StudentID"] = $_POST["ID"];
+
+    // header('Location: ../../pages/auth/login.php');
 
     $conn=null;
 } catch(PDOException $e) {

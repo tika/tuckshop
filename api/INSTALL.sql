@@ -8,7 +8,7 @@ CREATE TABLE Students
     ID       INT(4) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Forename VARCHAR(16) NOT NULL,
     Surname  VARCHAR(16) NOT NULL,
-    Password VARCHAR(72) NOT NULL,
+    Password VARCHAR(200) NOT NULL,
     House    VARCHAR(20) NOT NULL,
     Year     INT(2) NOT NULL,
     Role     TINYINT(1) DEFAULT 0,

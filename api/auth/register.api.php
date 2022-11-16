@@ -25,7 +25,7 @@ try {
     }
     
     # encrypt password
-    $hashed = password_hash($_POST["password"], PASSWORD_BCRYPT);
+    $hashed = password_hash($_POST["password"], PASSWORD_DEFAULT);
     
     $stmt->bindParam(':forename', $_POST["forename"]);
     $stmt->bindParam(':surname', $_POST["surname"]);

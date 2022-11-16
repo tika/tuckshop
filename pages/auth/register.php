@@ -2,7 +2,7 @@
 session_start();
 
 // ensure user is not logged in
-if ($_SESSION["StudentID"] != null) {
+if (isset($_SESSION['StudentID'])) {
     header("Location: ../app/home.php");
 }
 ?>
