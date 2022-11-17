@@ -49,7 +49,7 @@ if ($stmt->fetch(PDO::FETCH_ASSOC)["role"] == 0) {
             echo "<td> £" . $row["Price"] . "</td>";
             echo "<td>" . $row["StockQty"] . "</td>";
             echo "<td><button>Edit</button></td>";
-            echo "<td><form action='../../api/tuck/remove.api.php?id=" . $row["ID"] . "' method='POST'><button type='submit'>x</button></form></td>";
+            echo "<td><form action='../../api/tuck/remove.api.php' method='POST'><input type='hidden' name='ID' value=" . $row["ID"] . " /><button type='submit'>x</button></form></td>";
             echo "</tr>";
         }
         ?>
