@@ -25,10 +25,12 @@ try {
 
     array_map("htmlspecialchars", $_POST);
 
-    // if the user is an admin, delete the tuck
-    $stmt = $conn->prepare("DELETE FROM Tuck WHERE ID=:id");
+    // if the user is an admin, add the tuck
+    $stmt = $conn->prepare("UPDATE Tuck SET StockQty=:stockqty WHERE ID=:id");
 
     $stmt->bindParam(":id", $_POST["ID"]);
+    $stmt->bindParam(":stockqty", $_POST["qty"]);
+
     $stmt->execute();
 
     // redirect to manage page

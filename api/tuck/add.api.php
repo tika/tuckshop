@@ -35,7 +35,7 @@ try {
     $stmt->execute();
 
     // redirect to manage page
-    // $n = $stmt->rowCount();
+    header('Location: ../../pages/app/manage.php');
 
     $conn=null;
 } catch(PDOException $e) {
