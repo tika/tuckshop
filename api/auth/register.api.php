@@ -40,12 +40,14 @@ try {
     
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    print_r($row);
+    // print_r($row);
 
     // Set session
     $_SESSION["StudentID"] = $row["LAST_INSERT_ID()"];
 
-    echo $_SESSION["StudentID"];
+    // echo $_SESSION["StudentID"];
+
+    header("Location: ../../pages/app/home.php");
     
     $conn=null;
 } catch(PDOException $e) {
