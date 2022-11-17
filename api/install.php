@@ -53,9 +53,11 @@ echo "Created table tuck<br>";
 $stmt = $conn->prepare("CREATE TABLE Orders
 (
     ID        INT(8) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    Date      DATE NOT NULL,
-    Cancelled TINYINT(1),
-    Delivered TINYINT(1)
+    StudentID INT(4) UNSIGNED,
+    Date      DATE NOT NULL DEFAULT NOW(),
+    Cancelled TINYINT(1) DEFAULT 0,
+    Delivered TINYINT(1) DEFAULT 0,
+    Total     DECIMAL(15, 2) NULL
 )");
 $stmt->execute();
 
@@ -65,6 +67,8 @@ echo "Created table orders<br>";
 $stmt = $conn->prepare("CREATE TABLE Baskets
 (
     ID INT(8) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    OrderID INT(8) UNSIGNED,
+    TuckID INT(8) UNSIGNED,
     Qty INT
 )");
 $stmt->execute();

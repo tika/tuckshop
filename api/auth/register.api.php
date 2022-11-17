@@ -24,6 +24,8 @@ try {
             break;
     }
     
+    echo $_POST["password"];
+
     # encrypt password
     $hashed = password_hash($_POST["password"], PASSWORD_DEFAULT);
     
@@ -40,12 +42,8 @@ try {
     
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // print_r($row);
-
     // Set session
     $_SESSION["StudentID"] = $row["LAST_INSERT_ID()"];
-
-    // echo $_SESSION["StudentID"];
 
     header("Location: ../../pages/app/home.php");
     
