@@ -28,8 +28,6 @@ $stmt = $conn->prepare("CREATE TABLE Students
     Forename VARCHAR(16) NOT NULL,
     Surname  VARCHAR(16) NOT NULL,
     Password VARCHAR(200) NOT NULL,
-    House    VARCHAR(20) NOT NULL,
-    Year     INT(2) NOT NULL,
     Role     TINYINT(1) DEFAULT 0,
     Balance  DECIMAL(15, 2) DEFAULT 0.00
 )");
@@ -43,6 +41,7 @@ $stmt = $conn->prepare("CREATE TABLE Tuck
     ID       INT(8) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Name     VARCHAR(24) NOT NULL,
     Price    DECIMAL(15, 2) NOT NULL,
+    Image    VARCHAR(255) NOT NULL, # url of image
     StockQty INT(4) DEFAULT 0
 )");
 $stmt->execute();

@@ -81,10 +81,6 @@ if ($stmt->fetch(PDO::FETCH_ASSOC)["role"] == 0) {
                 </form>
             </td>";
             
-            // checkbox if order cancelled
-            // echo "<td><input type='checkbox' id=cancel onclick=updateCancel() name='cancelled' value='" . $row["ID"] . "' " . ($row["Cancelled"] == 1 ? "checked" : "") . " /></td>";
-            // echo "<td><input type='checkbox' id=deliver onclick=updateDelivered() name='delivered' value='" . $row["ID"] . "' " . ($row["Delivered"] == 1 ? "checked" : "") . " /></td>";
-            
             echo "</tr>";
         }
         ?>

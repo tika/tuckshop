@@ -28,13 +28,16 @@ if (!isset($_SESSION['StudentID'])) {
 
     echo "Hello, " . $row["Forename"] . "! <br>";
     echo "You have £" . $row["Balance"] . "<br>";
+    // view stats.php   
+    echo "<a href='../app/stats.php'>View Stats</a>";
+    echo "<br>";
     ?>
 
     <?php
         if ($isAdmin) {
             echo "<a href='../app/manage.php'>Manage stock</a><br>";
             echo "<a href='../app/students.php'>Manage students</a><br>";
-            echo "<a href='../app/orders.php'>View orders</a><br>";
+            echo "<a href='../app/orders.php'>View all orders</a><br>";
         }
     ?>
 
@@ -60,6 +63,8 @@ if (!isset($_SESSION['StudentID'])) {
             
             foreach ($rows as $row) {
                 echo "<li>";
+                // show image
+                echo "<img src='".$row["Image"]."' width='100px' height='100px' />";
                 echo "<span>".$row["StockQty"]." ".$row["Name"]." in stock. £".$row["Price"]."</span>";
                 // when Add to basket is clicked, add to basket variable in javascript
                 echo "<button onclick='addToBasket(" . $row["ID"] . ")'>Add to basket</button>";

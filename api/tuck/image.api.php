@@ -7,9 +7,7 @@ try {
 	
     // if this user is already logged in 
     if (!isset($_SESSION["StudentID"])) {
-        // Error
-        echo "You are not logged in";
-        header('Refresh:2;url = ../../pages/auth/login.php');
+        header('Location: ../../pages/auth/login.php');
         return;
     }
 
@@ -21,21 +19,17 @@ try {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($row["Role"] != 1) {
-        // Error
-        echo "You are not an admin";
-        header('Refresh:2;url = ../../pages/app/home.php');
+        header('Location: ../../pages/app/home.php');
         return;
     }
 
     array_map("htmlspecialchars", $_POST);
 
-    // if the user is an admin, add the tuck
-    $stmt = $conn->prepare("INSERT INTO Tuck (Image, Name, Price, StockQty) VALUES (:image, :name, :price, :stockqty)");
+    // if the user is an admin, change the image of the tuck
+    $stmt = $conn->prepare("UPDATE Tuck SET Image=:image WHERE ID=:id");
 
-    $stmt->bindParam(":image", $_POST["image"]);    
-    $stmt->bindParam(":name", $_POST["name"]);
-    $stmt->bindParam(":stockqty", $_POST["stockqty"]);
-    $stmt->bindParam(":price", $_POST["price"]);
+    $stmt->bindParam(":id", $_POST["ID"]);
+    $stmt->bindParam(":image", $_POST["Image"]);
 
     $stmt->execute();
 

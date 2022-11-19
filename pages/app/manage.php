@@ -30,6 +30,7 @@ if ($stmt->fetch(PDO::FETCH_ASSOC)["role"] == 0) {
 
     <table>
         <tr>
+            <th>Image</th>
             <th>Name</th>
             <th>Price</th>
             <th>Stock Qty</th>
@@ -44,6 +45,8 @@ if ($stmt->fetch(PDO::FETCH_ASSOC)["role"] == 0) {
 
         foreach ($rows as $row) {
             echo "<tr>";
+            // display image + form to change url
+            echo "<td><img src='" . $row["Image"] . "' width='100px' height='100px' /><form method='POST' action='../../api/tuck/image.api.php'><input placeholder='" . $row["Image"] . "' name='Image'><input type='hidden' name='ID' value=" . $row["ID"] . "><button type='submit'>Update</button></form></td>";
             echo "<td>" . $row["Name"] . "</td>";
             echo "<td> £" . $row["Price"] . "</td>";
             
@@ -61,7 +64,12 @@ if ($stmt->fetch(PDO::FETCH_ASSOC)["role"] == 0) {
         ?>
     </table>
 
+    <br>
+    <hr>
+    <br>
+
     <form action="../../api/tuck/add.api.php" method="POST">
+        <input placeholder="Image URL" name="image" />
         <input placeholder="Item Name" name="name" />
         <input placeholder="Price (without £)" name="price" />
         <input placeholder="Stock qty" name="stockqty" />

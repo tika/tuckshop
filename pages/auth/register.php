@@ -24,8 +24,6 @@ if (isset($_SESSION['StudentID'])) {
         Forename: <input type="text" name="forename"><br>
         Surname:<input type="text" name="surname"><br>
         Password:<input type="password" name="password"><br>
-        House:<input type="text" name="house"><br>
-        Year:<input type="text" name="year"><br>
         <input type="radio" name="role" value="User" checked> User<br>
         <input type="radio" name="role" value="Admin"> Admin<br>
         <input type="submit" value="Register">

@@ -13,7 +13,7 @@ try {
 
     print_r($_POST);
 
-    $stmt = $conn->prepare("INSERT INTO Students (ID,Forename,Surname,Password,House,Year,Role,Balance) VALUES (null,:forename,:surname,:password,:house,:year,:role,0)");
+    $stmt = $conn->prepare("INSERT INTO Students (ID,Forename,Surname,Password,Role,Balance) VALUES (null,:forename,:surname,:password,:role,0)");
 
     switch($_POST["role"]){
         case "User":
@@ -32,8 +32,6 @@ try {
     $stmt->bindParam(':forename', $_POST["forename"]);
     $stmt->bindParam(':surname', $_POST["surname"]);
     $stmt->bindParam(':password', $hashed);
-    $stmt->bindParam(':house', $_POST["house"]);
-    $stmt->bindParam(':year', $_POST["year"]);
     $stmt->bindParam(':role', $role);
     $stmt->execute();
 
