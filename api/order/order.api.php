@@ -28,9 +28,9 @@ try {
         header('Refresh:2;url = ../../pages/app/home.php');
         return;
     }
-
+    
     // if no items provided
-    if (!isset($_POST["items"])) {
+    if (!isset($_POST["basket"])) {
         // Error
         echo "No items provided";
         header('Refresh:2;url = ../../pages/app/home.php');
@@ -53,18 +53,6 @@ try {
             $multipleBasketIds[$i] = 1;
         }
     }
-
-    // create order id
-    $stmt = $conn->prepare("INSERT INTO Orders (StudentID) VALUES (:studentid)");
-
-    $stmt->bindParam(":studentid", $_SESSION["StudentID"]);
-
-    $stmt->execute();
-    
-    $stmt = $conn->prepare("SELECT LAST_INSERT_ID()");
-    $stmt->execute();
-    
-    $orderid = $stmt->fetch(PDO::FETCH_ASSOC)["LAST_INSERT_ID()"];
 
     // get all tuck ids and prices
     $stmt = $conn->prepare("SELECT ID, Price, Name FROM Tuck");
@@ -128,6 +116,21 @@ try {
         $stmt->bindParam(":qty", $new_qty);
         $stmt->execute();
     }
+
+    // ---- CARRY OUT ORDER
+    
+    // create order id
+    $stmt = $conn->prepare("INSERT INTO Orders (StudentID) VALUES (:studentid)");
+
+    $stmt->bindParam(":studentid", $_SESSION["StudentID"]);
+
+    $stmt->execute();
+    
+    $stmt = $conn->prepare("SELECT LAST_INSERT_ID()");
+    $stmt->execute();
+    
+    $orderid = $stmt->fetch(PDO::FETCH_ASSOC)["LAST_INSERT_ID()"];
+
 
     // remove from balance
     $stmt = $conn->prepare("UPDATE Students SET Balance=:bal WHERE ID=:id");

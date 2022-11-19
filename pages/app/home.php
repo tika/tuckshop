@@ -34,6 +34,7 @@ if (!isset($_SESSION['StudentID'])) {
         if ($isAdmin) {
             echo "<a href='../app/manage.php'>Manage stock</a><br>";
             echo "<a href='../app/students.php'>Manage students</a><br>";
+            echo "<a href='../app/orders.php'>View orders</a><br>";
         }
     ?>
 
