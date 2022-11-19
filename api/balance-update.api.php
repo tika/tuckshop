@@ -2,14 +2,12 @@
 
 session_start();
 try {
-	include_once('../lib/connection.php');
+	include_once('./lib/connection.php');
 	array_map("htmlspecialchars", $_POST);
 	
     // if this user is already logged in 
     if (!isset($_SESSION["StudentID"])) {
-        // Error
-        echo "You are not logged in";
-        header('Refresh:2;url = ../../pages/auth/login.php');
+        header('Location: ../pages/auth/login.php');
         return;
     }
 
@@ -21,25 +19,22 @@ try {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($row["Role"] != 1) {
-        // Error
-        echo "You are not an admin";
-        header('Refresh:2;url = ../../pages/app/home.php');
+        header('Location: ../pages/app/home.php');
         return;
     }
 
     array_map("htmlspecialchars", $_POST);
 
     // if the user is an admin, add the tuck
-    $stmt = $conn->prepare("INSERT INTO Tuck (Name, Price, StockQty) VALUES (:name, :price, :stockqty)");
+    $stmt = $conn->prepare("UPDATE Students SET Balance=:balance WHERE ID=:id");
 
-    $stmt->bindParam(":name", $_POST["name"]);
-    $stmt->bindParam(":stockqty", $_POST["stockqty"]);
-    $stmt->bindParam(":price", $_POST["price"]);
+    $stmt->bindParam(":id", $_POST["ID"]);
+    $stmt->bindParam(":balance", $_POST["Balance"]);
 
     $stmt->execute();
 
     // redirect to manage page
-    header('Location: ../../pages/app/manage.php');
+    header('Location: ../pages/app/students.php');
 
     $conn=null;
 } catch(PDOException $e) {

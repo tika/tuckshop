@@ -7,7 +7,9 @@ try {
 	
     // if this user is already logged in 
     if (!isset($_SESSION["StudentID"])) {
-        header('Location: ../../pages/auth/login.php');
+        // Error
+        echo "Student is not logged in";
+        header('Refresh:2;url = ../../pages/app/home.php');
         return;
     }
 
@@ -21,7 +23,17 @@ try {
 
     // i.e. are they actually real
     if ($row["Role"] == null) {
-        header('Location: ../../pages/app/home.php');
+        // Error
+        echo "Invalid credentials";
+        header('Refresh:2;url = ../../pages/app/home.php');
+        return;
+    }
+
+    // if no items provided
+    if (!isset($_POST["items"])) {
+        // Error
+        echo "No items provided";
+        header('Refresh:2;url = ../../pages/app/home.php');
         return;
     }
 
@@ -45,7 +57,7 @@ try {
     // create order id
     $stmt = $conn->prepare("INSERT INTO Orders (StudentID) VALUES (:studentid)");
 
-    $stmt->bindParam(":studentid", $_SERVER["StudentID"]);
+    $stmt->bindParam(":studentid", $_SESSION["StudentID"]);
 
     $stmt->execute();
     
@@ -55,7 +67,7 @@ try {
     $orderid = $stmt->fetch(PDO::FETCH_ASSOC)["LAST_INSERT_ID()"];
 
     // get all tuck ids and prices
-    $stmt = $conn->prepare("SELECT ID, Price FROM Tuck");
+    $stmt = $conn->prepare("SELECT ID, Price, Name FROM Tuck");
     $stmt->execute();
 
     $tuck = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -73,8 +85,9 @@ try {
             }
         }
         if (!$found) {
-            // not found
-            header('Location: ../../pages/app/home.php');
+            // Error
+            echo "Error with tuck in your basket";
+            header('Refresh:2;url = ../../pages/app/home.php');
             return;
         }
     }
@@ -87,15 +100,11 @@ try {
     $balance = $stmt->fetch(PDO::FETCH_ASSOC)["Balance"];
     
     if ($balance < $order_total) {
-        header('Location: ../../pages/app/home.php');
+        // Error
+        echo "You don't have enough money";
+        header('Refresh:2;url = ../../pages/app/home.php');
         return;
     }
-
-    // remove from balance
-    $stmt = $conn->prepare("UPDATE Students SET Balance=:bal WHERE ID=:id");
-    $new_balance = $balance - $order_total;
-    $stmt->bindParam(":bal", $new_balance);
-    $stmt->execute();
     
     // make sure user has enough stock
     foreach ($multipleBasketIds as $id => $qty) {
@@ -105,18 +114,27 @@ try {
         
         $stockqty = $stmt->fetch(PDO::FETCH_ASSOC)["StockQty"];
         
-        if ($stockqty < $qty) {
-            header('Location: ../../pages/app/home.php');
+        if ($stockqty < $qty) {;
+            // Error
+            echo "Not enough stock of this tuck item";
+            header('Refresh:2;url = ../../pages/app/home.php');
             return;
-        } else {
-            // remove from stock
-            $stmt = $conn->prepare("UPDATE Tuck SET StockQty=:qty WHERE ID=:id");
-            $stmt->bindParam(":id", $id);
-            $new_qty = $stockqty - $qty;
-            $stmt->bindParam(":qty", $n);
-            $stmt->execute();
         }
+        
+        // remove from stock
+        $stmt = $conn->prepare("UPDATE Tuck SET StockQty=:qty WHERE ID=:id");
+        $stmt->bindParam(":id", $id);
+        $new_qty = $stockqty - $qty;
+        $stmt->bindParam(":qty", $new_qty);
+        $stmt->execute();
     }
+
+    // remove from balance
+    $stmt = $conn->prepare("UPDATE Students SET Balance=:bal WHERE ID=:id");
+    $stmt->bindParam(":id", $_SESSION["StudentID"]);
+    $new_balance = $balance - $order_total;
+    $stmt->bindParam(":bal", $new_balance);
+    $stmt->execute();
 
     // add to baskets in sql
     foreach ($multipleBasketIds as $tid => $qty) {
@@ -139,11 +157,21 @@ try {
     // print out order summary
     echo "Order Summary: <br>";
     echo "Order ID: " . $orderid . "<br>";
-    echo "Total: " . $order_total . "<br>";
-    echo "Items: <br>";
-    foreach ($multipleBasketIds as $tid => $qty) {
-        echo $tid . " x " . $qty . "<br>";
+    echo "Total: £" . $order_total . "<br>";
+    echo "Items bought: <br>";
+    echo "<ul>";
+
+    // echo the number of each item, and the name of each by using tuck
+    foreach ($multipleBasketIds as $id => $qty) {
+        foreach ($tuck as $_ => $t) {
+            if ($t["ID"] == $id) {
+                echo "<li>" . $qty . "x " . $t["Name"] . "</li>";
+                break;
+            }
+        }
     }
+
+    echo "</ul>";
 
     $conn=null;
 } catch(PDOException $e) {

@@ -31,7 +31,7 @@ $stmt = $conn->prepare("CREATE TABLE Students
     House    VARCHAR(20) NOT NULL,
     Year     INT(2) NOT NULL,
     Role     TINYINT(1) DEFAULT 0,
-    Balance  DECIMAL(15, 2) DEFAULT 0
+    Balance  DECIMAL(15, 2) DEFAULT 0.00
 )");
 $stmt->execute();
 

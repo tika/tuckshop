@@ -13,7 +13,7 @@ try {
 
     print_r($_POST);
 
-    $stmt = $conn->prepare("INSERT INTO Students (ID,Forename,Surname,Password,House,Year,Role,Balance) VALUES (null,:forename,:surname,:password,:house,:year,:role,null)");
+    $stmt = $conn->prepare("INSERT INTO Students (ID,Forename,Surname,Password,House,Year,Role,Balance) VALUES (null,:forename,:surname,:password,:house,:year,:role,0)");
 
     switch($_POST["role"]){
         case "User":
